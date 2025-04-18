@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Citizen } from '@/types/citizen';
 import { CitizenMap } from '@/lib/CitizenManagementHashMap';
 import { Edit, Plus, Search, Trash2 } from 'lucide-react';
@@ -29,12 +29,22 @@ const CitizenManagement = () => {
     try {
       manager.insert(formData.nic, formData);
       setCitizens(manager.getAll());
-      console.log(manager.getAll())
+      modal.current?.close();
       setFormData({ nic: '', name: '', dateOfBirth: '', address: '' });
     } catch (error) {
       alert('Citizen with this NIC already exists.');
     }
   };
+
+  const handleDelete = (nic: string) => {
+    try{
+      manager.delete(nic);
+      setCitizens(manager.getAll());
+    }
+    catch(error){
+      alert('delete karanna ba htto')
+    }
+  }
 
   return (
     <div className='w-full h-full p-2'>
@@ -97,17 +107,23 @@ const CitizenManagement = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>1234567890</td>
-              <td>John Doe</td>
-              <td>123 Main St</td>
-              <td>1990-01-01</td>
-              <td className='flex flex-row gap-2'>
-                <button className='btn btn-soft btn-square btn-info'><Edit className='size-5' /></button>
-                <button className='btn btn-soft btn-square btn-error'><Trash2 className='size-5' /></button>
-              </td>
-            </tr>
+            {
+              citizens.map((c,index) => {
+                return (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{c.nic}</td>
+                    <td>{c.name}</td>
+                    <td>{c.address}</td>
+                    <td>{c.dateOfBirth}</td>
+                    <td className='flex flex-row gap-2'>
+                      <button className='btn btn-soft btn-square btn-info'><Edit className='size-5' /></button>
+                      <button className='btn btn-soft btn-square btn-error'><Trash2 className='size-5' onClick={() => {handleDelete(c.nic)}}/></button>
+                    </td>
+                  </tr>
+                )
+              })
+            }
           </tbody>
         </table>
       </div>
