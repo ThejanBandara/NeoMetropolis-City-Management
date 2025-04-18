@@ -1,12 +1,37 @@
 'use client'
 import { Globe, MenuIcon } from "lucide-react";
+import { useState } from "react";
+import CitizenManagement from "./CitizenManagement";
+import Dashboard from "./Dashboard";
+import CriminalDataManagement from "./CriminalDataManagement";
+import EmergencyRequests from "./EmergencyRequests";
+import Reports from "./Reports";
 
 const Sidebar = ({children,}: Readonly<{children: React.ReactNode;}>) => {
+
+    const [tab, setTab] = useState(1)
+    const tabs = ["CitizenManagement"]
+
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer lg:drawer-open h-screen">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col items-center justify-center">
-          {children}
+        <div className="drawer-content flex flex-col items-stretch">
+          
+            {
+                tab === 1 && <Dashboard/>
+            }
+            {
+                tab === 2 && <CitizenManagement/>
+            }
+            {
+                tab === 3 && <CriminalDataManagement/>
+            }
+            {
+                tab === 4 && <EmergencyRequests/>
+            }
+            {
+                tab === 5 && <Reports/>
+            }
           <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden absolute top-4 left-4">
             <MenuIcon/>
           </label>
@@ -18,11 +43,11 @@ const Sidebar = ({children,}: Readonly<{children: React.ReactNode;}>) => {
               <Globe className="size-12"/>
               <h1 className="font-bold text-2xl">NeoMetroPolis</h1>
             </div>
-            <li><button className="btn btn-block rounded-lg btn- btn-soft">Dashboard</button></li>
-            <li><button className="btn btn-block rounded-lg btn- btn-soft">Citizen Management</button></li>
-            <li><button className="btn btn-block rounded-lg btn- btn-soft">Criminal Data</button></li>
-            <li><button className="btn btn-block rounded-lg btn- btn-soft">Citizen Management</button></li>
-            <li><button className="btn btn-block rounded-lg btn- btn-soft">Citizen Management</button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 1 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(1)}}>Dashboard</button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 2 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(2)}}>Citizen Profile </button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 3 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(3)}}>Criminal Data</button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 4 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(4)}}>emergency Requests</button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 5 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(5)}}>Reports</button></li>
           </ul>
         </div>
       </div>

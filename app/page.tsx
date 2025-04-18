@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main className="w-full h-screen">
       <Sidebar>
-        {/* <CitizenManagement/> */}
+        <CitizenManagement/>
       </Sidebar>
     </main>
   )
