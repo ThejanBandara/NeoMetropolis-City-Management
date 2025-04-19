@@ -7,10 +7,9 @@ import CriminalDataManagement from "./CriminalDataManagement";
 import EmergencyRequests from "./EmergencyRequests";
 import Reports from "./Reports";
 
-const Sidebar = ({children,}: Readonly<{children: React.ReactNode;}>) => {
+const Sidebar = () => {
 
     const [tab, setTab] = useState(1)
-    const tabs = ["CitizenManagement"]
 
   return (
     <div className="drawer lg:drawer-open h-screen">

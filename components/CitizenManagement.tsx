@@ -42,13 +42,13 @@ const CitizenManagement = () => {
       setCitizens(manager.getAll());
     }
     catch(error){
-      alert('delete karanna ba htto')
+      alert('delete karanna ba ')
     }
   }
 
   return (
     <div className='w-full h-full p-2'>
-      <h1 className='text-2xl font-medium'>Citizen Profile Management</h1>
+      <h1 className='text-2xl font-medium w-full text-center lg:text-left'>Citizen Profile Management</h1>
       <div className='w-full h-[90vh] pt-4'>
         <div className='w-full flex flex-row gap-3 pb-2'>
           <div className='grow w-full flex flex-row gap-2'>
