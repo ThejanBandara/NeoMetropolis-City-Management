@@ -10,10 +10,11 @@ import Reports from "./Reports";
 const Sidebar = () => {
 
     const [tab, setTab] = useState(1)
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <div className="drawer lg:drawer-open h-screen">
-        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" checked={drawerOpen}/>
         <div className="drawer-content flex flex-col items-stretch">
           
             {
@@ -31,7 +32,7 @@ const Sidebar = () => {
             {
                 tab === 5 && <Reports/>
             }
-          <label htmlFor="my-drawer-2" className="btn btn-info btn-square btn-soft border-[1px] border-info drawer-button lg:hidden absolute top-4 left-4">
+          <label htmlFor="my-drawer-2" className="btn btn-info btn-square btn-soft border-[1px] border-info drawer-button lg:hidden absolute top-4 left-4" onClick={() => setDrawerOpen(!drawerOpen)}>
             <MenuIcon/>
           </label>
         </div>
@@ -42,11 +43,11 @@ const Sidebar = () => {
               <Globe className="size-12"/>
               <h1 className="font-bold text-2xl">NeoMetroPolis</h1>
             </div>
-            <li><button className={`btn btn-block rounded-lg ${tab === 1 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(1)}}>Dashboard</button></li>
-            <li><button className={`btn btn-block rounded-lg ${tab === 2 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(2)}}>Citizen Profile </button></li>
-            <li><button className={`btn btn-block rounded-lg ${tab === 3 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(3)}}>Criminal Data</button></li>
-            <li><button className={`btn btn-block rounded-lg ${tab === 4 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(4)}}>emergency Requests</button></li>
-            <li><button className={`btn btn-block rounded-lg ${tab === 5 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(5)}}>Reports</button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 1 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(1); setDrawerOpen(!drawerOpen)}}>Dashboard</button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 2 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(2); setDrawerOpen(!drawerOpen)}}>Citizen Profile </button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 3 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(3); setDrawerOpen(!drawerOpen)}}>Criminal Data</button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 4 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(4); setDrawerOpen(!drawerOpen)}}>emergency Requests</button></li>
+            <li><button className={`btn btn-block rounded-lg ${tab === 5 ? 'btn-info' : 'btn-soft'}`} onClick={() => {setTab(5); setDrawerOpen(!drawerOpen)}}>Reports</button></li>
           </ul>
         </div>
       </div>

@@ -23,7 +23,7 @@ export class CitizenMap implements CitizenMapADT {
     private hash(key: string): number {
         let hashValue = 0;
         for (let i = 0; i < key.length; i++){
-            hashValue = (hashValue * 31 + key.charCodeAt(0)) % this.size;
+            hashValue = (hashValue * 31 + key.charCodeAt(i)) % this.size;
         }
 
         return hashValue;
