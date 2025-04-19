@@ -49,7 +49,7 @@ const CitizenManagement = () => {
   return (
     <div className='w-full h-full p-2'>
       <h1 className='text-2xl font-medium w-full text-center lg:text-left'>Citizen Profile Management</h1>
-      <div className='w-full h-[90vh] pt-4'>
+      <div className='w-full h-[85vh] mt-4 lg:mt-0 lg:h-[90vh] pt-4'>
         <div className='w-full flex flex-row gap-3 pb-2'>
           <div className='grow w-full flex flex-row gap-2'>
             <label className="input grow">
@@ -95,7 +95,7 @@ const CitizenManagement = () => {
 
         </div>
 
-        <table className='w-full table table-pin-rows'>
+        <table className='w-full table table-xs lg:table-md table-pin-rows'>
           <thead>
             <tr className='bg-base-200 rounded-t-xl'>
               <td>#</td>

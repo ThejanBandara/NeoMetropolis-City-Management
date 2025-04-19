@@ -31,7 +31,7 @@ const Sidebar = () => {
             {
                 tab === 5 && <Reports/>
             }
-          <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden absolute top-4 left-4">
+          <label htmlFor="my-drawer-2" className="btn btn-info btn-square btn-soft border-[1px] border-info drawer-button lg:hidden absolute top-4 left-4">
             <MenuIcon/>
           </label>
         </div>
