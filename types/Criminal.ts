@@ -1,6 +1,6 @@
 export interface Criminal {
     name: string;
-    gender: "male" | "female" | "other";
+    gender: "male" | "female" | "other" | "unknown";
 
     crimeType: string;
     crimeDescription: string;

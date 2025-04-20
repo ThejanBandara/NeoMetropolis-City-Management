@@ -15,7 +15,7 @@ export class CriminalHashMap implements CriminalMapADT {
 
     constructor(size = 100){
         this.size = size;
-        this.buckets = Array(size).fill(null).map(() => []);
+        this.buckets = Array.from({ length: size }, () => []);
     }
 
     private Hash(name: string): number {
@@ -23,7 +23,7 @@ export class CriminalHashMap implements CriminalMapADT {
         for (let i = 0; i < name.length; i++){
             hashValue = (hashValue * 31 + name.charCodeAt(i)) % this.size;
         }
-
+        console.log('name hashed')
         return hashValue;
     }
 

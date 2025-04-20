@@ -25,7 +25,6 @@ export class CitizenMap implements CitizenMapADT {
         for (let i = 0; i < key.length; i++){
             hashValue = (hashValue * 31 + key.charCodeAt(i)) % this.size;
         }
-
         return hashValue;
     }
 
