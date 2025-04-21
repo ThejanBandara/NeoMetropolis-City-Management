@@ -14,7 +14,7 @@ const Sidebar = () => {
 
   return (
     <div className="drawer lg:drawer-open h-screen">
-        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" checked={drawerOpen}/>
+        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" checked={drawerOpen} readOnly/>
         <div className="drawer-content flex flex-col items-stretch">
           
             {
@@ -37,7 +37,7 @@ const Sidebar = () => {
           </label>
         </div>
         <div className="drawer-side">
-          <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
+          <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay" onClick={() => setDrawerOpen(!drawerOpen)}></label>
           <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 flex flex-col gap-2">
             <div className="flex flex-row gap-2 items-center mb-4">
               <Globe className="size-12"/>

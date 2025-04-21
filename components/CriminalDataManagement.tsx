@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { Plus, Search, SquareArrowOutUpRightIcon } from 'lucide-react'
+import { Edit, Plus, Search, SquareArrowOutUpRightIcon, Trash2 } from 'lucide-react'
 import { Criminal } from '@/types/Criminal';
 import { CriminalHashMap } from '@/lib/CriminalDataHashMap';
 
@@ -62,8 +62,8 @@ const CriminalDataManagement = () => {
   }
 
   const handleDescriptionModal = (desc: string) => {
-      setCrimeDesc(desc);
-      infoModal.current?.showModal();
+    setCrimeDesc(desc);
+    infoModal.current?.showModal();
   }
 
   return (
@@ -125,7 +125,7 @@ const CriminalDataManagement = () => {
 
                 <fieldset className='fieldset'>
                   <legend className=' fieldset-legend'>Criminal Status</legend>
-                  <select defaultValue={"Set_Status"} id='status' required value={formData.status} onChange={handleChange} className='select w-full'>
+                  <select id='status' required value={formData.status} onChange={handleChange} className='select w-full'>
                     <option value="Set_Status" disabled>Set Status</option>
                     <option value="under_investigation">Under Investigation</option>
                     <option value="in_court">In Court</option>
@@ -146,7 +146,7 @@ const CriminalDataManagement = () => {
               <p className="py-4">{crimeDesc}</p>
               <div className="modal-action">
                 <form method="dialog">
-                  
+
                   <button className="btn">Close</button>
                 </form>
               </div>
@@ -156,7 +156,7 @@ const CriminalDataManagement = () => {
         </div>
         <table className='w-full table table-xs lg:table-md table-pin-rows'>
           <thead>
-            <tr>
+            <tr className='bg-base-200 rounded-t-xl text-white'>
               <td className='w-fit'>#</td>
               <td className='w-3/12'>Name</td>
               <td className='w-fit'>Gender</td>
@@ -164,6 +164,7 @@ const CriminalDataManagement = () => {
               <td className='w-1/12'>reported Date</td>
               <td className='w-fit'>Repeated offender</td>
               <td className='w-fit'>Criminal Status</td>
+              <td></td>
             </tr>
           </thead>
 
@@ -175,10 +176,14 @@ const CriminalDataManagement = () => {
                     <td className=''>{index + 1}</td>
                     <td className=''>{c.name}</td>
                     <td className='text-center'>{c.gender}</td>
-                    <td className='flex flex-row items-center justify-stretch gap-2'><span className='w-full grow'>{c.crimeType}</span><button className='btn btn-xs btn-square btn-soft size-8' onClick={() => {handleDescriptionModal(c.crimeDescription)}}><SquareArrowOutUpRightIcon className='size-4' /></button></td>
+                    <td className='flex flex-row items-center justify-stretch gap-2'><span className='w-full grow'>{c.crimeType}</span><button className='btn btn-xs btn-square btn-soft size-8' onClick={() => { handleDescriptionModal(c.crimeDescription) }}><SquareArrowOutUpRightIcon className='size-4' /></button></td>
                     <td className=''>{c.date}</td>
-                    <td className='text-center'><input type="checkbox" checked={c.isrepeatOffender} className="checkbox checkbox-primary" /></td>
+                    <td className='text-center'><input type="checkbox" checked={c.isrepeatOffender} readOnly className="checkbox checkbox-primary" /></td>
                     <td className='text-center'><div className={`badge badge-soft ${c.status === 'under_investigation' ? 'badge-warning' : c.status === 'in_court' ? 'badge-info' : c.status === 'convicted' ? 'badge-error' : 'badge-success'} text-xs text-nowrap`}>{c.status}</div></td>
+                    <td className='flex flex-row gap-2'>
+                      <button className='btn btn-soft btn-square btn-info'><Edit className='size-5' /></button>
+                      <button className='btn btn-soft btn-square btn-error'><Trash2 className='size-5' /></button>
+                    </td>
                   </tr>
                 );
               })
