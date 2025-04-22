@@ -6,11 +6,225 @@ import { ArrowUpRightFromSquareIcon, Edit, Plus, Search, Trash2 } from "lucide-r
 import React, { useState } from "react";
 
 
+
 const EmergencyRequests = () => {
 
   const EmergencyRef = React.useRef(new EmergencyRequestPriorityQueue());
   const Emergency = EmergencyRef.current;
   const addModal = React.useRef<HTMLDialogElement>(null);
+
+  React.useEffect(() => {
+    const initialData: EmergencyRequest[] = [
+      {
+        id: "REQ-1",
+        title: "Fire in building",
+        description: "Smoke detected in the second floor of the building",
+        priority: 5,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-2",
+        title: "Gas leak",
+        description: "Suspected gas leak in apartment C-403",
+        priority: 4,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-3",
+        title: "Car accident",
+        description: "Two cars collided near the 5th Avenue",
+        priority: 3,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-4",
+        title: "Child missing",
+        description: "Reported missing child in the park area",
+        priority: 5,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-5",
+        title: "Flooded basement",
+        description: "Water leak flooded the basement of the library",
+        priority: 2,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-6",
+        title: "Elevator stuck",
+        description: "People stuck in elevator in building B",
+        priority: 4,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-7",
+        title: "Power outage",
+        description: "Sudden power loss in zone 3",
+        priority: 2,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-8",
+        title: "Animal attack",
+        description: "Stray dog attacked a pedestrian",
+        priority: 3,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-9",
+        title: "Tree fallen",
+        description: "Tree blocking road near 8th street",
+        priority: 1,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-10",
+        title: "Fire alarm triggered",
+        description: "Possible false alarm in building A",
+        priority: 2,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-11",
+        title: "Injury on playground",
+        description: "Child injured on slide",
+        priority: 3,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-12",
+        title: "Suspected theft",
+        description: "Break-in attempt at Block D",
+        priority: 4,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-13",
+        title: "Medical emergency",
+        description: "Man fainted near station",
+        priority: 5,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-14",
+        title: "Overflowing garbage",
+        description: "Unattended trash causing bad smell",
+        priority: 1,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-15",
+        title: "Suspicious package",
+        description: "Unattended bag found at entrance",
+        priority: 4,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-16",
+        title: "Noise complaint",
+        description: "Loud music past midnight",
+        priority: 1,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-17",
+        title: "Slippery floor",
+        description: "Water spill in corridor",
+        priority: 2,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-18",
+        title: "Electrical short",
+        description: "Sparks seen in meter room",
+        priority: 3,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-19",
+        title: "Lost wallet",
+        description: "Wallet dropped in cafeteria",
+        priority: 1,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+      {
+        id: "REQ-20",
+        title: "Crowd control",
+        description: "Crowd gathered for protest",
+        priority: 4,
+        status: "Pending",
+        reportedTime: new Date().toISOString(),
+        assignedTime: "",
+        resolvedTime: "",
+      },
+    ];
+  
+    for (const req of initialData) {
+      Emergency.enqueue(req);
+    }
+  
+    setRequests(Emergency.getAll());
+    
+  }, []);
+  
 
   const [FormData, setFormData] = useState<EmergencyRequest>({
     id: `REQ-${Emergency.size() + 1}`,

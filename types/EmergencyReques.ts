@@ -1,5 +1,5 @@
 
-export type Status = "Pending" | "In_Progress" |"resolved";
+export type Status = "Pending" | "Assigned" |"Resolved";
 
 export interface EmergencyRequest {
     id: string,
