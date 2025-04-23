@@ -103,6 +103,7 @@ useEffect(() => {
 
     if (e.target.value === '') {
       setCitizens(manager.getAll());
+      setCitizensBackup(manager.getAll());
     }
     else {
       const filteredCitizens = citizensBackup.filter((citizen) => citizen.nic.includes(e.target.value));

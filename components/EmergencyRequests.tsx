@@ -2,7 +2,8 @@
 import { EmergencyRequestPriorityQueue } from "@/lib/EmergencyRequestPriorityQueue";
 import formatDate from "@/lib/utils/FormatDate";
 import { EmergencyRequest } from "@/types/EmergencyReques";
-import { ArrowUpRightFromSquareIcon, Edit, Plus, Search, Trash2 } from "lucide-react"
+import { profile } from "console";
+import { ArrowUpRightFromSquareIcon, Edit, Info, Plus, Search, Trash2, X } from "lucide-react"
 import React, { useState } from "react";
 
 
@@ -12,6 +13,9 @@ const EmergencyRequests = () => {
   const EmergencyRef = React.useRef(new EmergencyRequestPriorityQueue());
   const Emergency = EmergencyRef.current;
   const addModal = React.useRef<HTMLDialogElement>(null);
+  const descModal = React.useRef<HTMLDialogElement>(null);
+  const DeleteModal = React.useRef<HTMLDialogElement>(null);
+  const EditModal = React.useRef<HTMLDialogElement>(null);
 
   React.useEffect(() => {
     const initialData: EmergencyRequest[] = [
@@ -216,15 +220,15 @@ const EmergencyRequests = () => {
         resolvedTime: "",
       },
     ];
-  
+
     for (const req of initialData) {
       Emergency.enqueue(req);
     }
-  
+
     setRequests(Emergency.getAll());
-    
+
   }, []);
-  
+
 
   const [FormData, setFormData] = useState<EmergencyRequest>({
     id: `REQ-${Emergency.size() + 1}`,
@@ -237,7 +241,13 @@ const EmergencyRequests = () => {
     resolvedTime: ''
 
   });
+
   const [requests, setRequests] = useState<EmergencyRequest[]>([]);
+  const [requestsBackup, setRequestsBackup] = useState<EmergencyRequest[]>([]);
+
+  const [description, setDescription] = useState('');
+  const [deleteId, setDeleteId] = useState('');
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...FormData, [e.target.id]: e.target.value });
@@ -249,6 +259,7 @@ const EmergencyRequests = () => {
     try {
       Emergency.enqueue(FormData);
       setRequests(Emergency.getAll())
+      setRequestsBackup(Emergency.getAll())
       console.log(requests)
       addModal.current?.close();
       setFormData({
@@ -267,17 +278,44 @@ const EmergencyRequests = () => {
 
   }
 
+  const HandleDescriptionModal = (desc: string) => {
+    setDescription(desc);
+    descModal.current?.showModal();
+  }
+
+  const HandleDeleteModal = () => {
+    try{
+      Emergency.removeById(deleteId);
+      DeleteModal.current?.close();
+      setRequests(Emergency.getAll());
+      setRequestsBackup(Emergency.getAll());
+    } 
+    catch(err){
+      console.log(err)
+    }
+  }
+
+  const HandleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      setRequests(Emergency.getAll());
+      setRequestsBackup(Emergency.getAll());
+    }
+    else {
+      const FilteredRequests = requestsBackup.filter((req) => req.title.includes(e.target.value));
+      setRequests(FilteredRequests);
+    }
+  }
+
   return (
     <div className='w-full h-full p-2'>
       <h1 className='text-2xl font-medium py-4 lg:py-2 w-full flex flex-col items-center justify-center lg:items-start'>Emergency Request Handler</h1>
-      <div className='w-full h-[85vh] mt-4 lg:mt-0' >
+      
         <div className='w-full flex flex-row gap-3 pb-2'>
           <div className='grow w-full flex flex-row gap-2'>
             <label className="input grow">
               <Search />
-              <input type="search" placeholder="Search by NIC" />
+              <input type="search" placeholder="Search by NIC" onChange={HandleSearch} />
             </label>
-            <button className='btn btn-info btn-square'><Search /></button>
           </div>
 
           <button className='btn btn-soft btn-info ' onClick={() => { addModal.current?.showModal() }}><Plus /> add new</button>
@@ -338,7 +376,34 @@ const EmergencyRequests = () => {
               </form>
             </div>
           </dialog>
+
+          <dialog id="my_modal_1" ref={descModal} className="modal">
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">Crime Description</h3>
+              <p className="py-4">{description}</p>
+              <div className="modal-action">
+                <form method="dialog">
+
+                  <button className="btn">Close</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
+
+          <dialog id="my_modal_2" ref={DeleteModal} className="modal">
+            <div className="modal-box">
+              <h3 className="font-bold text-lg flex gap-3 items-center"><Info className='text-error size-8' /> Confirm Delete</h3>
+              <p className="py-4">Are you really want to delete this Citizen record? </p>
+              <div className="modal-action">
+                <button className='btn btn-soft flex gap-2 items-center' onClick={() => { DeleteModal.current?.close() }}><X className='size-4' /> close</button>
+                <button className='btn btn-error flex gap-2 items-center' onClick={() => { HandleDeleteModal()}}><Trash2 className='size-4' /> Delete</button>
+              </div>
+            </div>
+          </dialog>
+
         </div>
+
+        <div className='w-full h-[80vh] mt-4 lg:mt-0 overflow-y-auto' >
         <table className='w-full table table-xs lg:table-md table-pin-rows'>
           <thead>
             <tr className='bg-base-200 rounded-t-xl text-white'>
@@ -359,16 +424,16 @@ const EmergencyRequests = () => {
                   <td>{request.id}</td>
                   <td className="flex flex-row items-center justify-between">
                     <span>{request.title}</span>
-                    <button className="btn btn-soft btn-info btn-square size-8"><ArrowUpRightFromSquareIcon className="size-4" /></button>
+                    <button className="btn btn-soft btn-info btn-square size-8" onClick={() => { HandleDescriptionModal(request.description) }}><ArrowUpRightFromSquareIcon className="size-4" /></button>
                   </td>
-                  <td className="bg-error/5 text-error text-center">{request.priority}</td>
+                  <td className={`text-center ${request.priority === 5 ? 'bg-error/10 text-error' : request.priority === 4 ? 'bg-warning/10 text-warning' : request.priority === 3 ? 'bg-info/10 text-info' : request.priority === 2 ? 'bg-accent/10 text-accent' : 'bg-success/10 text-success'} `}>{request.priority}</td>
                   <td className="flex flex-col items-center justify-center"><div className="badge badge-soft badge-primary"> {request.status} </div></td>
                   <td>{request.reportedTime === '' ? '-' : formatDate(request.reportedTime)}</td>
                   <td>{request.assignedTime === '' ? 'not assigned yet' : formatDate(request.assignedTime)}</td>
                   <td>{request.resolvedTime === '' ? 'not resolved yet' : formatDate(request.resolvedTime)}</td>
                   <td className='flex flex-row gap-2'>
                     <button className='btn btn-soft btn-square btn-info'><Edit className='size-5' /></button>
-                    <button className='btn btn-soft btn-square btn-error'><Trash2 className='size-5' /></button>
+                    <button className='btn btn-soft btn-square btn-error' onClick={() => { setDeleteId(request.id); DeleteModal.current?.showModal() }}><Trash2 className='size-5' /></button>
                   </td>
                 </tr>
               ))

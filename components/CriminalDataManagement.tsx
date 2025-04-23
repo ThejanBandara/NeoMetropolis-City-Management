@@ -281,6 +281,7 @@ const CriminalDataManagement = () => {
 
     if (e.target.value === '') {
       setCriminals(manager.getAllCriminals());
+      setCriminalsBackup(manager.getAllCriminals());
     }
     else {
       const filteredCriminals = criminalsBackup.filter((criminal) => criminal.name.includes(e.target.value));
