@@ -8,6 +8,4 @@ export interface EmergencyRequest {
     priority: number,
     status: Status
     reportedTime: string,
-    assignedTime: string,
-    resolvedTime: string,   
 }

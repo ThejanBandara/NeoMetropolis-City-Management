@@ -1,5 +1,5 @@
 
-import { Citizen } from "@/types/citizen";
+import { Citizen } from "@/types/Citizen";
 
 // defining the ADT for the Citizen HashMap 
 interface CitizenMapADT {

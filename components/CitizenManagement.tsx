@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Citizen } from '@/types/citizen';
+import { Citizen } from '@/types/Citizen';
 import { CitizenMap } from '@/lib/CitizenManagementHashMap';
 import { Edit, Info, Plus, Search, Trash2, X } from 'lucide-react';
 

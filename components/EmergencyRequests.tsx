@@ -15,219 +15,6 @@ const EmergencyRequests = () => {
   const addModal = React.useRef<HTMLDialogElement>(null);
   const descModal = React.useRef<HTMLDialogElement>(null);
   const DeleteModal = React.useRef<HTMLDialogElement>(null);
-  const EditModal = React.useRef<HTMLDialogElement>(null);
-
-  React.useEffect(() => {
-    const initialData: EmergencyRequest[] = [
-      {
-        id: "REQ-1",
-        title: "Fire in building",
-        description: "Smoke detected in the second floor of the building",
-        priority: 5,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-2",
-        title: "Gas leak",
-        description: "Suspected gas leak in apartment C-403",
-        priority: 4,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-3",
-        title: "Car accident",
-        description: "Two cars collided near the 5th Avenue",
-        priority: 3,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-4",
-        title: "Child missing",
-        description: "Reported missing child in the park area",
-        priority: 5,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-5",
-        title: "Flooded basement",
-        description: "Water leak flooded the basement of the library",
-        priority: 2,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-6",
-        title: "Elevator stuck",
-        description: "People stuck in elevator in building B",
-        priority: 4,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-7",
-        title: "Power outage",
-        description: "Sudden power loss in zone 3",
-        priority: 2,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-8",
-        title: "Animal attack",
-        description: "Stray dog attacked a pedestrian",
-        priority: 3,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-9",
-        title: "Tree fallen",
-        description: "Tree blocking road near 8th street",
-        priority: 1,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-10",
-        title: "Fire alarm triggered",
-        description: "Possible false alarm in building A",
-        priority: 2,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-11",
-        title: "Injury on playground",
-        description: "Child injured on slide",
-        priority: 3,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-12",
-        title: "Suspected theft",
-        description: "Break-in attempt at Block D",
-        priority: 4,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-13",
-        title: "Medical emergency",
-        description: "Man fainted near station",
-        priority: 5,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-14",
-        title: "Overflowing garbage",
-        description: "Unattended trash causing bad smell",
-        priority: 1,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-15",
-        title: "Suspicious package",
-        description: "Unattended bag found at entrance",
-        priority: 4,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-16",
-        title: "Noise complaint",
-        description: "Loud music past midnight",
-        priority: 1,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-17",
-        title: "Slippery floor",
-        description: "Water spill in corridor",
-        priority: 2,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-18",
-        title: "Electrical short",
-        description: "Sparks seen in meter room",
-        priority: 3,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-19",
-        title: "Lost wallet",
-        description: "Wallet dropped in cafeteria",
-        priority: 1,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-      {
-        id: "REQ-20",
-        title: "Crowd control",
-        description: "Crowd gathered for protest",
-        priority: 4,
-        status: "Pending",
-        reportedTime: new Date().toISOString(),
-        assignedTime: "",
-        resolvedTime: "",
-      },
-    ];
-
-    for (const req of initialData) {
-      Emergency.enqueue(req);
-    }
-
-    setRequests(Emergency.getAll());
-
-  }, []);
 
 
   const [FormData, setFormData] = useState<EmergencyRequest>({
@@ -237,9 +24,6 @@ const EmergencyRequests = () => {
     priority: 1,
     status: 'Pending',
     reportedTime: new Date().toISOString(),
-    assignedTime: '',
-    resolvedTime: ''
-
   });
 
   const [requests, setRequests] = useState<EmergencyRequest[]>([]);
@@ -269,8 +53,6 @@ const EmergencyRequests = () => {
         priority: 1,
         status: 'Pending',
         reportedTime: new Date().toISOString(),
-        assignedTime: '',
-        resolvedTime: ''
       })
     } catch (err) {
       console.log(err)
@@ -319,7 +101,6 @@ const EmergencyRequests = () => {
           </div>
 
           <button className='btn btn-soft btn-info ' onClick={() => { addModal.current?.showModal() }}><Plus /> add new</button>
-
           <dialog className="modal" ref={addModal} id="my_modal_1">
             <div className="modal-box">
               <h3 className="font-bold text-lg">Add New Emergency request</h3>
@@ -412,8 +193,6 @@ const EmergencyRequests = () => {
               <td className='w-1/12 text-center'>Priority</td>
               <td className='w-1/12 text-center'>Status</td>
               <td className='w-fit'>Reported Time</td>
-              <td className='w-fit'>Assigned Time</td>
-              <td className='w-fit'>Resolved Time</td>
               <td className="w-fit"></td>
             </tr>
           </thead>
@@ -429,8 +208,6 @@ const EmergencyRequests = () => {
                   <td className={`text-center ${request.priority === 5 ? 'bg-error/10 text-error' : request.priority === 4 ? 'bg-warning/10 text-warning' : request.priority === 3 ? 'bg-info/10 text-info' : request.priority === 2 ? 'bg-accent/10 text-accent' : 'bg-success/10 text-success'} `}>{request.priority}</td>
                   <td className="flex flex-col items-center justify-center"><div className="badge badge-soft badge-primary"> {request.status} </div></td>
                   <td>{request.reportedTime === '' ? '-' : formatDate(request.reportedTime)}</td>
-                  <td>{request.assignedTime === '' ? 'not assigned yet' : formatDate(request.assignedTime)}</td>
-                  <td>{request.resolvedTime === '' ? 'not resolved yet' : formatDate(request.resolvedTime)}</td>
                   <td className='flex flex-row gap-2'>
                     <button className='btn btn-soft btn-square btn-info'><Edit className='size-5' /></button>
                     <button className='btn btn-soft btn-square btn-error' onClick={() => { setDeleteId(request.id); DeleteModal.current?.showModal() }}><Trash2 className='size-5' /></button>

@@ -1,4 +1,3 @@
-import EmergencyRequests from "@/components/EmergencyRequests";
 import { EmergencyRequest } from "@/types/EmergencyReques";
 // Adt for the priority Queue
 
@@ -6,7 +5,7 @@ export interface ERPriorityQueueADT {
   enqueue(request: EmergencyRequest): void;
   dequeue(): EmergencyRequest | null;
   peek(): EmergencyRequest | null;
-  isEmpty(): boolean;
+  isEmpty(): boolean; 
   size(): number;
   getAll(): EmergencyRequest[];
   updateRequest(id: string, updatedFields: Partial<EmergencyRequest>): boolean;
