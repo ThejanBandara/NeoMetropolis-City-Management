@@ -3,11 +3,11 @@ import { Citizen } from "@/types/CitizenType";
 
 // defining the ADT for the Citizen HashMap 
 interface CitizenMapADT {
-    insert(key: string, value: Citizen) : boolean;
-    get(key: string) : Citizen | null;
-    delete(key: string) : boolean;
-    update(key: string, value: Citizen) : boolean;
-    getAll() : Citizen[];
+    insertCitizen(key: string, value: Citizen) : boolean;
+    getCitizen(key: string) : Citizen | null;
+    deleteCitizen(key: string) : boolean;
+    updateCitizen(key: string, value: Citizen) : boolean;
+    getAllCitizen() : Citizen[];
 }
 
 export class CitizenMap implements CitizenMapADT {
@@ -28,7 +28,7 @@ export class CitizenMap implements CitizenMapADT {
         return hashValue;
     }
 
-    insert(key: string, value: Citizen): boolean {
+    insertCitizen(key: string, value: Citizen): boolean {
 
         const index = this.hash(key);
         const bucket = this.buckets[index];
@@ -44,7 +44,7 @@ export class CitizenMap implements CitizenMapADT {
         return true;
     }
 
-    get(key: string): Citizen | null {
+    getCitizen(key: string): Citizen | null {
 
         const index = this.hash(key);
         const bucket = this.buckets[index];
@@ -58,7 +58,7 @@ export class CitizenMap implements CitizenMapADT {
         return null;
     }
 
-    delete(key: string): boolean {
+    deleteCitizen(key: string): boolean {
         
         const index = this.hash(key);
         const bucket = this.buckets[index];
@@ -73,16 +73,22 @@ export class CitizenMap implements CitizenMapADT {
         return false;
     }
 
-    update(key: string, value: Citizen): boolean {
+    updateCitizen(key: string, value: Citizen): boolean {
 
         const index = this.hash(key);
         const bucket = this.buckets[index];
-
-        return true;
-        // update the value of the citizen
+    
+        for (let i = 0; i < bucket.length; i++) {
+            if (bucket[i].key === key) {
+                bucket[i].value = value;
+                return true;
+            }
+        }
+    
+        return false;
     }
 
-    getAll(): Citizen[] {
+    getAllCitizen(): Citizen[] {
         
         return this.buckets.flat().map(entry => entry.value);
 
