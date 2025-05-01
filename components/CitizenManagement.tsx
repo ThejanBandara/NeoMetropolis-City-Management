@@ -34,7 +34,8 @@ useEffect(() => {
     { nic: '920678901V', name: 'Janaka Alwis', dateOfBirth: '1992-06-06', address: '60 New Town, Chilaw' },
     { nic: '860789012V', name: 'Sajani Kumari', dateOfBirth: '1986-02-28', address: '140 Hill Top, Galle' },
   ];
-
+ 
+  
   for (const citizen of sampleCitizens) {
     try {
       manager.insert(citizen.nic, citizen);
