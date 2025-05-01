@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Citizen } from '@/types/Citizen';
+import { Citizen } from '@/types/CitizenType';
 import { CitizenMap } from '@/lib/CitizenManagementHashMap';
 import { Edit, Info, Plus, Search, Trash2, X } from 'lucide-react';
 
@@ -35,7 +35,7 @@ useEffect(() => {
     { nic: '860789012V', name: 'Sajani Kumari', dateOfBirth: '1986-02-28', address: '140 Hill Top, Galle' },
   ];
  
-  
+
   for (const citizen of sampleCitizens) {
     try {
       manager.insert(citizen.nic, citizen);
