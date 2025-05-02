@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { CitizenProvider } from "@/lib/context/CitizenContext";
 import { CriminalProvider } from "@/lib/context/CriminalDataContext";
+import { EmergencyRequestProvider } from "@/lib/context/EmergencyRequestContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,14 +27,16 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
       <AuthProvider>
         <CitizenProvider>
           <CriminalProvider>
-            <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            {children}
-          </body>
-        </CriminalProvider>
-      </CitizenProvider>
-    </AuthProvider>
+            <EmergencyRequestProvider>
+              <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+              >
+                {children}
+              </body>
+            </EmergencyRequestProvider>
+          </CriminalProvider>
+        </CitizenProvider>
+      </AuthProvider>
     </html >
   );
 }

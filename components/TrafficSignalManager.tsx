@@ -173,7 +173,7 @@ const TrafficSignalManager = () => {
                         </div>
                         <div className='w-full h-fit flex flex-col items-strech gap-2'>
                             <div className='w-full flex flex-row gap-2 items-center justify-center p-1'>
-                                <input type="number" className='input w-1/4' value={TrafficLight2} onChange={(e) => { if (e.target.valueAsNumber === null || undefined) { return }; setTrafficLight1(e.target.valueAsNumber) }} />
+                                <input type="number" className='input w-1/4' value={TrafficLight2} onChange={(e) => { if (e.target.valueAsNumber === null || undefined) { return }; setTrafficLight2(e.target.valueAsNumber) }} />
                                 <button className='btn btn-soft btn-info' onClick={() => HandleTiming(1, TrafficLight2)}>set</button>
                             </div>
                             <div className='w-full flex flex-row items-center justify-center gap-2 p-1'>
@@ -197,7 +197,7 @@ const TrafficSignalManager = () => {
                         </div>
                         <div className='w-full h-fit flex flex-col items-strech gap-2'>
                             <div className='w-full flex flex-row gap-2 items-center justify-center p-1'>
-                                <input type="number" className='input w-1/4' value={TrafficLight2} onChange={(e) => { if (e.target.valueAsNumber === null || undefined) { return }; setTrafficLight1(e.target.valueAsNumber) }} />
+                                <input type="number" className='input w-1/4' value={TrafficLight3} onChange={(e) => { if (e.target.valueAsNumber === null || undefined) { return }; setTrafficLight3(e.target.valueAsNumber) }} />
                                 <button className='btn btn-soft btn-info' onClick={() => HandleTiming(2, TrafficLight3)}>set</button>
                             </div>
                             <div className='w-full flex flex-row items-center justify-center gap-2 p-1'>

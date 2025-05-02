@@ -1,8 +1,8 @@
 'use client'
+import { useEmergencyRequestContext } from "@/lib/context/EmergencyRequestContext";
 import { EmergencyRequestPriorityQueue } from "@/lib/EmergencyRequestPriorityQueue";
 import formatDate from "@/lib/utils/FormatDate";
 import { EmergencyRequest } from "@/types/EmergencyRequest";
-import { profile } from "console";
 import { ArrowUpRightFromSquareIcon, Edit, Info, Plus, Search, Trash2, X } from "lucide-react"
 import React, { useState } from "react";
 
@@ -10,24 +10,21 @@ import React, { useState } from "react";
 
 const EmergencyRequests = () => {
 
-  const EmergencyRef = React.useRef(new EmergencyRequestPriorityQueue());
-  const Emergency = EmergencyRef.current;
+  const { requests, enqueueRequest, dequeueRequest, getRequestSize, getAllRequests, updateRequest, removeRequest }  = useEmergencyRequestContext();
   const addModal = React.useRef<HTMLDialogElement>(null);
   const descModal = React.useRef<HTMLDialogElement>(null);
   const DeleteModal = React.useRef<HTMLDialogElement>(null);
 
 
   const [FormData, setFormData] = useState<EmergencyRequest>({
-    id: `REQ-${Emergency.size() + 1}`,
+    id: `REQ-${getRequestSize() + 1}`,
     title: '',
     description: '',
     priority: 1,
-    status: 'Pending',
     reportedTime: new Date().toISOString(),
   });
 
-  const [requests, setRequests] = useState<EmergencyRequest[]>([]);
-  const [requestsBackup, setRequestsBackup] = useState<EmergencyRequest[]>([]);
+  const [requestsBackup, setRequestsBackup] = useState<EmergencyRequest[]>(requests);
 
   const [description, setDescription] = useState('');
   const [deleteId, setDeleteId] = useState('');
@@ -41,17 +38,16 @@ const EmergencyRequests = () => {
     e.preventDefault();
 
     try {
-      Emergency.enqueue(FormData);
-      setRequests(Emergency.getAll())
-      setRequestsBackup(Emergency.getAll())
+      enqueueRequest(FormData as EmergencyRequest);
+      getAllRequests();
+      setRequestsBackup(requests);
       console.log(requests)
       addModal.current?.close();
       setFormData({
-        id: `REQ-${Emergency.size() + 1}`,
+        id: `REQ-${getRequestSize() + 1}`,
         title: '',
         description: '',
         priority: 1,
-        status: 'Pending',
         reportedTime: new Date().toISOString(),
       })
     } catch (err) {
@@ -66,25 +62,27 @@ const EmergencyRequests = () => {
   }
 
   const HandleDeleteModal = () => {
-    try{
-      Emergency.removeById(deleteId);
+
+    const success = removeRequest(deleteId);
+
+    if(success) {
       DeleteModal.current?.close();
-      setRequests(Emergency.getAll());
-      setRequestsBackup(Emergency.getAll());
-    } 
-    catch(err){
-      console.log(err)
+      getAllRequests()
+      setRequestsBackup(requests);
+    }
+    else{
+      console.log('Error deleting request')
     }
   }
 
   const HandleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
-      setRequests(Emergency.getAll());
-      setRequestsBackup(Emergency.getAll());
+      getAllRequests()
+      setRequestsBackup(requests);
     }
     else {
-      const FilteredRequests = requestsBackup.filter((req) => req.title.includes(e.target.value));
-      setRequests(FilteredRequests);
+      const FilteredRequests = requests.filter((req) => req.title.includes(e.target.value));
+      setRequestsBackup(FilteredRequests);
     }
   }
 
@@ -191,14 +189,13 @@ const EmergencyRequests = () => {
               <td className='w-1/12'>id</td>
               <td className='w-3/12 text-center'>Request title</td>
               <td className='w-1/12 text-center'>Priority</td>
-              <td className='w-1/12 text-center'>Status</td>
               <td className='w-fit'>Reported Time</td>
               <td className="w-fit"></td>
             </tr>
           </thead>
           <tbody>
             {
-              requests.map((request) => (
+              requestsBackup.map((request) => (
                 <tr key={request.id}>
                   <td>{request.id}</td>
                   <td className="flex flex-row items-center justify-between">
@@ -206,7 +203,6 @@ const EmergencyRequests = () => {
                     <button className="btn btn-soft btn-info btn-square size-8" onClick={() => { HandleDescriptionModal(request.description) }}><ArrowUpRightFromSquareIcon className="size-4" /></button>
                   </td>
                   <td className={`text-center ${request.priority === 5 ? 'bg-error/10 text-error' : request.priority === 4 ? 'bg-warning/10 text-warning' : request.priority === 3 ? 'bg-info/10 text-info' : request.priority === 2 ? 'bg-accent/10 text-accent' : 'bg-success/10 text-success'} `}>{request.priority}</td>
-                  <td className="flex flex-col items-center justify-center"><div className="badge badge-soft badge-primary"> {request.status} </div></td>
                   <td>{request.reportedTime === '' ? '-' : formatDate(request.reportedTime)}</td>
                   <td className='flex flex-row gap-2'>
                     <button className='btn btn-soft btn-square btn-info'><Edit className='size-5' /></button>
