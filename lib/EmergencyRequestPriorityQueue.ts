@@ -1,4 +1,4 @@
-import { EmergencyRequest } from "@/types/EmergencyReques";
+import { EmergencyRequest } from "@/types/EmergencyRequest";
 // Adt for the priority Queue
 
 export interface ERPriorityQueueADT {

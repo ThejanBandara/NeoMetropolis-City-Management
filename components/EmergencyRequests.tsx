@@ -1,7 +1,7 @@
 'use client'
 import { EmergencyRequestPriorityQueue } from "@/lib/EmergencyRequestPriorityQueue";
 import formatDate from "@/lib/utils/FormatDate";
-import { EmergencyRequest } from "@/types/EmergencyReques";
+import { EmergencyRequest } from "@/types/EmergencyRequest";
 import { profile } from "console";
 import { ArrowUpRightFromSquareIcon, Edit, Info, Plus, Search, Trash2, X } from "lucide-react"
 import React, { useState } from "react";

@@ -2,210 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { Edit, Info, Plus, Search, SquareArrowOutUpRightIcon, Trash2, X } from 'lucide-react'
 import { Criminal } from '@/types/Criminal';
-import { CriminalHashMap } from '@/lib/CriminalDataHashMap';
+import { useCriminalContext } from '@/lib/context/CriminalDataContext';
+
 
 const CriminalDataManagement = () => {
 
-  const managerRef = React.useRef(new CriminalHashMap());
-  const manager = managerRef.current;
-
-  useEffect(() => {
-    const sampleData: Criminal[] = [
-      {
-        name: 'John Wick',
-        gender: 'male',
-        crimeType: 'Assault',
-        crimeDescription: 'Involved in multiple high-profile assassinations.',
-        date: '2023-08-01',
-        isrepeatOffender: true,
-        status: 'convicted'
-      },
-      {
-        name: 'Jane Doe',
-        gender: 'female',
-        crimeType: 'Fraud',
-        crimeDescription: 'Embezzled millions from a corporation.',
-        date: '2024-02-12',
-        isrepeatOffender: false,
-        status: 'in_court'
-      },
-      {
-        name: 'Alex Unknown',
-        gender: 'unknown',
-        crimeType: 'Cyber Crime',
-        crimeDescription: 'Hacked into government databases.',
-        date: '2024-10-05',
-        isrepeatOffender: true,
-        status: 'under_investigation'
-      },
-      {
-        name: 'Maria Gonzales',
-        gender: 'female',
-        crimeType: 'Drug Possession',
-        crimeDescription: 'Caught with illegal substances in possession.',
-        date: '2023-12-11',
-        isrepeatOffender: false,
-        status: 'released'
-      },
-      {
-        name: 'David Smith',
-        gender: 'male',
-        crimeType: 'Theft',
-        crimeDescription: 'Stole valuables from multiple homes.',
-        date: '2023-11-19',
-        isrepeatOffender: true,
-        status: 'convicted'
-      },
-      {
-        name: 'Lisa Turner',
-        gender: 'female',
-        crimeType: 'Kidnapping',
-        crimeDescription: 'Abducted a high-profile businessman.',
-        date: '2022-07-08',
-        isrepeatOffender: false,
-        status: 'in_court'
-      },
-      {
-        name: 'Chris Brown',
-        gender: 'male',
-        crimeType: 'Murder',
-        crimeDescription: 'Involved in a first-degree homicide case.',
-        date: '2024-01-01',
-        isrepeatOffender: true,
-        status: 'convicted'
-      },
-      {
-        name: 'Nina Patel',
-        gender: 'female',
-        crimeType: 'Smuggling',
-        crimeDescription: 'Transported illegal goods across borders.',
-        date: '2024-03-14',
-        isrepeatOffender: false,
-        status: 'under_investigation'
-      },
-      {
-        name: 'Maxwell Payne',
-        gender: 'male',
-        crimeType: 'Assault',
-        crimeDescription: 'Engaged in violent altercation with law enforcement.',
-        date: '2023-09-09',
-        isrepeatOffender: true,
-        status: 'convicted'
-      },
-      {
-        name: 'Emily Rose',
-        gender: 'female',
-        crimeType: 'Arson',
-        crimeDescription: 'Set fire to a government building.',
-        date: '2023-06-03',
-        isrepeatOffender: false,
-        status: 'in_court'
-      },
-      {
-        name: 'Robert King',
-        gender: 'male',
-        crimeType: 'Tax Evasion',
-        crimeDescription: 'Did not report earnings for 5 years.',
-        date: '2022-04-15',
-        isrepeatOffender: true,
-        status: 'under_investigation'
-      },
-      {
-        name: 'Isabella Clark',
-        gender: 'female',
-        crimeType: 'Identity Theft',
-        crimeDescription: 'Stole and used multiple fake identities.',
-        date: '2024-01-22',
-        isrepeatOffender: false,
-        status: 'convicted'
-      },
-      {
-        name: 'Tyler Grant',
-        gender: 'male',
-        crimeType: 'Extortion',
-        crimeDescription: 'Blackmailed officials for personal gain.',
-        date: '2023-05-25',
-        isrepeatOffender: true,
-        status: 'in_court'
-      },
-      {
-        name: 'Angela White',
-        gender: 'female',
-        crimeType: 'Bribery',
-        crimeDescription: 'Bribed judges to avoid prosecution.',
-        date: '2024-02-07',
-        isrepeatOffender: true,
-        status: 'under_investigation'
-      },
-      {
-        name: 'Samuel Black',
-        gender: 'male',
-        crimeType: 'Vandalism',
-        crimeDescription: 'Destroyed public property.',
-        date: '2023-03-12',
-        isrepeatOffender: false,
-        status: 'released'
-      },
-      {
-        name: 'Olivia Green',
-        gender: 'female',
-        crimeType: 'Forgery',
-        crimeDescription: 'Created fake documents for immigration.',
-        date: '2023-10-16',
-        isrepeatOffender: true,
-        status: 'convicted'
-      },
-      {
-        name: 'Noah Johnson',
-        gender: 'male',
-        crimeType: 'Pickpocketing',
-        crimeDescription: 'Stole wallets in a crowded subway.',
-        date: '2024-03-01',
-        isrepeatOffender: false,
-        status: 'released'
-      },
-      {
-        name: 'Samantha Lee',
-        gender: 'female',
-        crimeType: 'Hacking',
-        crimeDescription: 'Breached security of a tech company.',
-        date: '2023-12-24',
-        isrepeatOffender: false,
-        status: 'in_court'
-      },
-      {
-        name: 'Liam Walker',
-        gender: 'male',
-        crimeType: 'Counterfeiting',
-        crimeDescription: 'Printed and distributed fake currency.',
-        date: '2022-11-30',
-        isrepeatOffender: true,
-        status: 'convicted'
-      },
-      {
-        name: 'Avery Brooks',
-        gender: 'other',
-        crimeType: 'Burglary',
-        crimeDescription: 'Broke into a jewelry store at night.',
-        date: '2024-04-10',
-        isrepeatOffender: false,
-        status: 'under_investigation'
-      }
-    ];
-
-    sampleData.forEach((criminal) => {
-      try {
-        manager.inserCriminal(criminal.name, criminal);
-      } catch (e) {
-        console.warn(`${criminal.name} already exists.`);
-      }
-    });
-
-    setCriminals(manager.getAllCriminals());
-    setCriminalsBackup(manager.getAllCriminals());
-  }, []);
-
-
+  const { criminals, insertCriminal, deleteCriminal, updateCriminal, getAllCriminals, getCriminalsSize } = useCriminalContext();
   const modal = React.useRef<HTMLDialogElement>(null);
   const infoModal = React.useRef<HTMLDialogElement>(null);
   const DeleteModal = React.useRef<HTMLDialogElement>(null);
@@ -213,11 +15,11 @@ const CriminalDataManagement = () => {
   const [name, setName] = useState('');
   const [crimeDesc, setCrimeDesc] = useState('');
 
-  const [criminals, setCriminals] = useState<Criminal[]>([]);
-  const [criminalsBackup, setCriminalsBackup] = useState<Criminal[]>([]);
+  const [criminalsBackup, setCriminalsBackup] = useState<Criminal[]>(criminals);
 
   const [formData, setFormData] = useState<Criminal>(
     {
+      id: `CRM-${getCriminalsSize() + 1}`,
       name: '',
       gender: "unknown",
       crimeType: '',
@@ -227,6 +29,10 @@ const CriminalDataManagement = () => {
       status: 'under_investigation'
     }
   );
+
+  useEffect(() => {
+    setCriminalsBackup(criminals);
+  },[criminals]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -239,12 +45,14 @@ const CriminalDataManagement = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      manager.inserCriminal(formData.name, formData);
-      setCriminals(manager.getAllCriminals());
-      setCriminalsBackup(manager.getAllCriminals());
+    const success = insertCriminal(formData.id, formData);
+
+    if (success) {
       modal.current?.close();
+      getAllCriminals();
+      setCriminalsBackup(criminals);
       setFormData({
+        id: `CRM-${getCriminalsSize() + 1}`,
         name: '',
         gender: "unknown",
         crimeType: '',
@@ -254,20 +62,22 @@ const CriminalDataManagement = () => {
         status: 'under_investigation'
       });
     }
-    catch (error) {
-      alert('Criminal with this name already exists.');
+    else{
+      console.log('Error adding criminal record')
     }
   }
 
-  const handleDelete = (name: string) => {
-    try {
-      manager.deleteCriminal(name);
+  const handleDelete = (id: string) => {
+
+    const sucess = deleteCriminal(id);
+
+    if(sucess) {
       DeleteModal.current?.close();
-      setCriminals(manager.getAllCriminals());
-      setCriminalsBackup(manager.getAllCriminals());
+      getAllCriminals();
+      setCriminalsBackup(criminals);
     }
-    catch (error) {
-      alert('delete karanna ba ');
+    else{
+      console.log('Error deleting criminal record')
     }
   }
 
@@ -280,12 +90,12 @@ const CriminalDataManagement = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     if (e.target.value === '') {
-      setCriminals(manager.getAllCriminals());
-      setCriminalsBackup(manager.getAllCriminals());
+      getAllCriminals()
+      setCriminalsBackup(criminals);
     }
     else {
-      const filteredCriminals = criminalsBackup.filter((criminal) => criminal.name.includes(e.target.value));
-      setCriminals(filteredCriminals);
+      const filteredCriminals = criminals.filter((criminal) => criminal.name.includes(e.target.value));
+      setCriminalsBackup(filteredCriminals);
     }
   }
 
@@ -405,7 +215,7 @@ const CriminalDataManagement = () => {
 
           <tbody>
             {
-              criminals.map((c, index) => {
+              criminalsBackup.map((c, index) => {
                 return (
                   <tr key={index}>
                     <td className=''>{index + 1}</td>
@@ -417,7 +227,7 @@ const CriminalDataManagement = () => {
                     <td className='text-center'><div className={`badge badge-soft ${c.status === 'under_investigation' ? 'badge-warning' : c.status === 'in_court' ? 'badge-info' : c.status === 'convicted' ? 'badge-error' : 'badge-success'} text-xs text-nowrap`}>{c.status}</div></td>
                     <td className='flex flex-row gap-2'>
                       <button className='btn btn-soft btn-square btn-info'><Edit className='size-5' /></button>
-                      <button className='btn btn-soft btn-square btn-error' onClick={() => { setName(c.name); DeleteModal.current?.showModal() }}><Trash2 className='size-5' /></button>
+                      <button className='btn btn-soft btn-square btn-error' onClick={() => { setName(c.id); DeleteModal.current?.showModal() }}><Trash2 className='size-5' /></button>
                     </td>
                   </tr>
                 );
