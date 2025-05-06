@@ -14,6 +14,8 @@ type EmergencyRequestContextType = {
     getAllRequests: () => void;
     updateRequest: (id: string, updatedFields: Partial<EmergencyRequest>) => boolean ;
     removeRequest: (id: string) => boolean ; 
+
+    assignRequestToOfficer: (id:string) => AssignedEmergencyRequest | null;
 }
 
 const EmergencyRequestContext = createContext<EmergencyRequestContextType | undefined>(undefined);
@@ -193,26 +195,34 @@ export const EmergencyRequestProvider = ({ children }: { children: React.ReactNo
     }
 
     const dequeueRequest = () => {
-        try{
-            const req = EmergencyRef.current.dequeue();
-            if (req) {
-                const assignedreq: AssignedEmergencyRequest = {
-                    request: req,
-                    assignedOfficer: user.user?.id ?? "Unknown Officer",
-                    assignedTime: new Date().toISOString(),
-                    status: 'assigned',
-                    resolvedTime: ''
-                };
-                setAssignedRequests([...assignedRequests, assignedreq]);
-            } else {
-                console.log('No request to dequeue');
-            }
-            setRequests(EmergencyRef.current.getAll());
-        }
-        catch(e){
-            console.log('Error dequeuing request');
-        }
+      try {
+          const req = EmergencyRef.current.dequeue();
+          if (req) {
+              const assignedreq: AssignedEmergencyRequest = {
+                  request: req,
+                  assignedOfficer: user.user?.id ?? "Unknown Officer",
+                  assignedTime: new Date().toISOString(),
+                  status: 'assigned',
+                  resolvedTime: ''
+              };
+              
+              setAssignedRequests(prev => {
+                  const updated = [...prev, assignedreq];
+                  return updated;
+              });
+
+              console.log(assignedRequests)
+          } else {
+              console.log('No request to dequeue');
+          }
+    
+          setRequests(EmergencyRef.current.getAll());
+          
+      } catch (e) {
+          console.log('Error dequeuing request:', e);
+      }
     }
+  
 
     const getRequestSize = () : number => {
         return EmergencyRef.current.size();
@@ -248,8 +258,33 @@ export const EmergencyRequestProvider = ({ children }: { children: React.ReactNo
         
    }
 
+   const assignRequestToOfficer = (officerId: string) => {
+    try {
+        const req = EmergencyRef.current.dequeue();
+        if (req) {
+            const assignedreq: AssignedEmergencyRequest = {
+                request: req,
+                assignedOfficer: officerId,
+                assignedTime: new Date().toISOString(),
+                status: 'assigned',
+                resolvedTime: ''
+            };
+            
+            setAssignedRequests(prev => [...prev, assignedreq]);
+            setRequests(EmergencyRef.current.getAll());
+            
+            return assignedreq;
+        }
+        return null;
+    } catch (e) {
+        console.log('Error assigning request:', e);
+        return null;
+    }
+  }
+
+
    return (
-    <EmergencyRequestContext.Provider value={{ requests, assignedRequests, enqueueRequest, dequeueRequest, getRequestSize, getAllRequests, updateRequest, removeRequest}}>
+    <EmergencyRequestContext.Provider value={{ requests, assignedRequests, enqueueRequest, dequeueRequest, getRequestSize, getAllRequests, updateRequest, removeRequest, assignRequestToOfficer}}>
         { children }
     </EmergencyRequestContext.Provider>
    )

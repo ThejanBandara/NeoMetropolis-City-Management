@@ -1,7 +1,7 @@
 'use client'
 // LoginForm.tsx
 import React, { useState } from "react";
-import { officer, officers } from "@/types/Officer";
+import { officers } from "@/types/Officer";
 import { useAuth } from "@/lib/context/AuthContext";
 import { GlobeIcon } from "lucide-react";
 import { redirect } from "next/navigation";
