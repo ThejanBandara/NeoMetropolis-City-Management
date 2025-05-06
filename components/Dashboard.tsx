@@ -3,8 +3,8 @@ import { useAuth } from '@/lib/context/AuthContext'
 import { useEmergencyRequestContext } from '@/lib/context/EmergencyRequestContext';
 import formatDate from '@/lib/utils/FormatDate';
 import { AssignedEmergencyRequest } from '@/types/EmergencyRequest';
-import { CctvIcon, FileStackIcon, ListChecks, ListChecksIcon, Siren, TrafficConeIcon, UsersIcon } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import { CctvIcon, FileStackIcon, ListChecks, ListChecksIcon, Siren, SunIcon, TrafficConeIcon, UsersIcon, Waves, Wind } from 'lucide-react';
+import React, { use, useEffect, useState } from 'react'
 
 const Dashboard = () => {
 
@@ -36,6 +36,21 @@ const Dashboard = () => {
     }
   }
 
+  const delay = (ms: number): Promise<void> => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  };
+
+  const handleResolveTask = async () => {
+    Emergency.resolveRequest(assignedRequest?.request.id || '');
+    setIsComplete(true);
+
+    await delay(1000);
+
+    user.updateAvailability(!available);
+    setAvailable(user.user?.isAvailable)
+    setIsComplete(false)
+  }
+
   return (
     <div className='w-full h-full p-2 max-h-screen '>
       <h1 className='text-2xl font-medium py-4 lg:py-2 w-full flex flex-col items-center justify-center lg:items-start'>Dashboard</h1>
@@ -45,7 +60,26 @@ const Dashboard = () => {
           <div className='w-full h-1/4 bg-base-200 rounded-lg p-2 relative'>
             <p className='text-lg'>hi, Officer {user.user?.name}</p>
             <p className='text-2xl font-medium'>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-            {user.user?.isAvailable ? 'available' : 'n/a'}
+            <div className='flex flex-row gap-3 items-center pt-2'>
+              <div className='flex flex-col items-center'>
+                <p className='text-4xl font-bold' >24°C</p>
+                <p className='text-sm font-light'>feels like: 22°C</p>
+              </div>
+              <div className='flex flex-col items-center '>
+                <SunIcon className='text-yellow-500 size-10'/>
+                <p>sunny</p>
+              </div>
+              <div>
+                <div>
+                  <Wind className='size-4'/>
+                  <p className='text-xs font-extralight'>2km/h</p>
+                </div>
+                <div>
+                  <Waves className='size-4'/>
+                  <p className='text-xs font-extralight'>41%</p>
+                </div>
+              </div>
+            </div>
             <div className={`absolute top-0 right-0 mt-2 mr-2 flex flex-row gap-2 items-center border-[1px] px-2 rounded-full ${available ? 'border-green-500' : 'border-red-500'}`}>
               <div className={`size-2 rounded-full ${available ? 'bg-green-500' : 'bg-red-500'} animate-ping`}></div>
               <p className='text-sm text-gray-400'>{available ? "Available" : "Not Available"}</p>
@@ -102,18 +136,18 @@ const Dashboard = () => {
                         <div className='w-full flex flex-col items-start'>
                           <p className={`w-full text-left text-lg font-medium ${isComplete ? 'text-neutral-content' : 'text-gray-600'}`}>Request resolved</p>
                           {
-                            isComplete ? 
-                            (
-                              <p className='w-full text-left text-sm text-gray-400'>{formatDate(assignedRequest?.resolvedTime || '')}</p>
-                            ) :(
-                              <p className='badge badge-soft badge-sm text-gray-600 border-[1px] border-gray-500'>not yet completed</p>
-                            )
+                            isComplete ?
+                              (
+                                <p className='w-full text-left text-sm text-gray-400'>{formatDate(assignedRequest?.resolvedTime || '')}</p>
+                              ) : (
+                                <p className='badge badge-soft badge-sm text-gray-600 border-[1px] border-gray-500'>not yet completed</p>
+                              )
                           }
                         </div>
                       </li>
                     </ul>
                   </div>
-                  <button className={`btn btn-success btn-wide ${isComplete ? 'btn-disabled' : 'btn-soft'}`}>Mark as Resolved</button>
+                  <button className={`btn btn-success btn-wide ${isComplete ? 'btn-disabled' : 'btn-soft'}`} onClick={() => { handleResolveTask()}}>Mark as Resolved</button>
                 </div>
               )
           }

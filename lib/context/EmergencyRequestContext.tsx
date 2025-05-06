@@ -16,6 +16,7 @@ type EmergencyRequestContextType = {
     removeRequest: (id: string) => boolean ; 
 
     assignRequestToOfficer: (id:string) => AssignedEmergencyRequest | null;
+    resolveRequest: (index: string) => void;
 }
 
 const EmergencyRequestContext = createContext<EmergencyRequestContextType | undefined>(undefined);
@@ -282,9 +283,34 @@ export const EmergencyRequestProvider = ({ children }: { children: React.ReactNo
     }
   }
 
+  const resolveRequest = (requestId: string) => {
+    try {
+      const index = assignedRequests.findIndex(req => req.request.id === requestId);
+      
+      if (index === -1) {
+        console.log('Request not found in assigned requests');
+        return null;
+      }
+      
+      const updatedRequests = [...assignedRequests];
+      
+      updatedRequests[index] = {
+        ...updatedRequests[index],
+        status: 'Resolved',
+        resolvedTime: new Date().toISOString()
+      };
+      
+      setAssignedRequests(updatedRequests);
+      
+    } catch (e) {
+      console.log('Error resolving request:', e);
+      return null;
+    }
+  };
+
 
    return (
-    <EmergencyRequestContext.Provider value={{ requests, assignedRequests, enqueueRequest, dequeueRequest, getRequestSize, getAllRequests, updateRequest, removeRequest, assignRequestToOfficer}}>
+    <EmergencyRequestContext.Provider value={{ requests, assignedRequests, enqueueRequest, dequeueRequest, getRequestSize, getAllRequests, updateRequest, removeRequest, assignRequestToOfficer, resolveRequest}}>
         { children }
     </EmergencyRequestContext.Provider>
    )
