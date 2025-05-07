@@ -12,7 +12,6 @@ const EmergencyRequests = () => {
 
   const { requests, enqueueRequest, dequeueRequest, getRequestSize, getAllRequests, updateRequest, removeRequest }  = useEmergencyRequestContext();
   const addModal = React.useRef<HTMLDialogElement>(null);
-  const descModal = React.useRef<HTMLDialogElement>(null);
   const DeleteModal = React.useRef<HTMLDialogElement>(null);
 
 
@@ -26,7 +25,6 @@ const EmergencyRequests = () => {
 
   const [requestsBackup, setRequestsBackup] = useState<EmergencyRequest[]>(requests);
 
-  const [description, setDescription] = useState('');
   const [deleteId, setDeleteId] = useState('');
 
 
@@ -56,10 +54,6 @@ const EmergencyRequests = () => {
 
   }
 
-  const HandleDescriptionModal = (desc: string) => {
-    setDescription(desc);
-    descModal.current?.showModal();
-  }
 
   const HandleDeleteModal = () => {
 
@@ -156,19 +150,6 @@ const EmergencyRequests = () => {
             </div>
           </dialog>
 
-          <dialog id="my_modal_1" ref={descModal} className="modal">
-            <div className="modal-box">
-              <h3 className="font-bold text-lg">Crime Description</h3>
-              <p className="py-4">{description}</p>
-              <div className="modal-action">
-                <form method="dialog">
-
-                  <button className="btn">Close</button>
-                </form>
-              </div>
-            </div>
-          </dialog>
-
           <dialog id="my_modal_2" ref={DeleteModal} className="modal">
             <div className="modal-box">
               <h3 className="font-bold text-lg flex gap-3 items-center"><Info className='text-error size-8' /> Confirm Delete</h3>
@@ -186,11 +167,12 @@ const EmergencyRequests = () => {
         <table className='w-full table table-xs lg:table-md table-pin-rows'>
           <thead>
             <tr className='bg-base-200 rounded-t-xl text-white'>
-              <td className='w-1/12'>id</td>
-              <td className='w-3/12 text-center'>Request title</td>
-              <td className='w-1/12 text-center'>Priority</td>
-              <td className='w-fit'>Reported Time</td>
-              <td className="w-fit"></td>
+              <td>id</td>
+              <td>Title</td>
+              <td>Description</td>
+              <td>Priority</td>
+              <td>Reported time</td>
+              <td></td>
             </tr>
           </thead>
           <tbody>
@@ -198,10 +180,8 @@ const EmergencyRequests = () => {
               requestsBackup.map((request) => (
                 <tr key={request.id}>
                   <td>{request.id}</td>
-                  <td className="flex flex-row items-center justify-between">
-                    <span>{request.title}</span>
-                    <button className="btn btn-soft btn-info btn-square size-8" onClick={() => { HandleDescriptionModal(request.description) }}><ArrowUpRightFromSquareIcon className="size-4" /></button>
-                  </td>
+                  <td>{request.title}</td>
+                  <td>{request.description}</td>
                   <td className={`text-center ${request.priority === 5 ? 'bg-error/10 text-error' : request.priority === 4 ? 'bg-warning/10 text-warning' : request.priority === 3 ? 'bg-info/10 text-info' : request.priority === 2 ? 'bg-accent/10 text-accent' : 'bg-success/10 text-success'} `}>{request.priority}</td>
                   <td>{request.reportedTime === '' ? '-' : formatDate(request.reportedTime)}</td>
                   <td className='flex flex-row gap-2'>
