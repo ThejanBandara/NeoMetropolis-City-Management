@@ -1,6 +1,7 @@
 'use client'
 import { useAuth } from '@/lib/context/AuthContext'
 import { useEmergencyRequestContext } from '@/lib/context/EmergencyRequestContext';
+import { useTabControl } from '@/lib/context/TabControlContext';
 import formatDate from '@/lib/utils/FormatDate';
 import { AssignedEmergencyRequest } from '@/types/EmergencyRequest';
 import { CctvIcon, FileStackIcon, ListChecks, ListChecksIcon, Siren, SunIcon, TrafficConeIcon, UsersIcon, Waves, Wind } from 'lucide-react';
@@ -10,6 +11,7 @@ const Dashboard = () => {
 
 
   const user = useAuth();
+  const tab = useTabControl();
   const Emergency = useEmergencyRequestContext();
   const [available, setAvailable] = useState<boolean | undefined>(user.user?.isAvailable);
   const [assignedRequest, setAssignedRequest] = useState<AssignedEmergencyRequest>();
@@ -87,12 +89,12 @@ const Dashboard = () => {
           </div>
           <h1 className='font-medium text-lg'>Quick access</h1>
           <div className='w-6/6 h-1/3 grid grid-rows-2 grid-cols-3 gap-3 p-2'>
-            <button className='btn btn-soft btn-primary h-6/6 rounded-lg w-auto'><UsersIcon className='size-8' /> <span className='grow text-center'>Citizen management</span></button>
-            <button className='btn btn-soft btn-secondary h-6/6 rounded-lg w-auto'><CctvIcon className='size-8' /> <span className='grow text-center'>Criminal Records</span></button>
-            <button className='btn btn-soft btn-accent h-6/6 rounded-lg grow w-auto'><Siren className='size-8' /> <span className='grow text-center'>Emergency Requests</span></button>
-            <button className='btn btn-soft btn-info h-6/6 rounded-lg w-auto'><ListChecks className='size-8' /> <span className='grow text-center'>Request tracking</span></button>
-            <button className='btn btn-soft btn-warning h-6/6 rounded-lg w-auto'><FileStackIcon className='size-8' /> <span className='grow text-center'>Reports</span> </button>
-            <button className='btn btn-soft btn-error h-6/6 rounded-lg w-auto'><TrafficConeIcon className='size-8' /> <span className='grow text-center'>Traffic AI</span></button>
+            <button className='btn btn-soft btn-primary h-6/6 rounded-lg w-auto' onClick={() => {tab.setTab(2)}}><UsersIcon className='size-8' /> <span className='grow text-center'>Citizen management</span></button>
+            <button className='btn btn-soft btn-secondary h-6/6 rounded-lg w-auto' onClick={() => {tab.setTab(3)}}><CctvIcon className='size-8' /> <span className='grow text-center'>Criminal Records</span></button>
+            <button className='btn btn-soft btn-accent h-6/6 rounded-lg grow w-auto' onClick={() => {tab.setTab(4)}}><Siren className='size-8' /> <span className='grow text-center'>Emergency Requests</span></button>
+            <button className='btn btn-soft btn-info h-6/6 rounded-lg w-auto' onClick={() => {tab.setTab(7)}}><ListChecks className='size-8' /> <span className='grow text-center'>Request tracking</span></button>
+            <button className='btn btn-soft btn-warning h-6/6 rounded-lg w-auto' onClick={() => {tab.setTab(5)}}><FileStackIcon className='size-8' /> <span className='grow text-center'>Reports</span> </button>
+            <button className='btn btn-soft btn-error h-6/6 rounded-lg w-auto' onClick={() => {tab.setTab(6)}}><TrafficConeIcon className='size-8' /> <span className='grow text-center'>Traffic AI</span></button>
           </div>
         </div>
 
