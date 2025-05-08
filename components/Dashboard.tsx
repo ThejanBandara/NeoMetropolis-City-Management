@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isAssigning && Emergency.assignedRequests.length > 0) {
-      const index = Emergency.assignedRequests.findIndex(req => req.assignedOfficer === user.user?.id);
+      const index = Emergency.assignedRequests.findIndex(req => req.assignedOfficer === user.user?.id && req.status === 'assigned');
       if (index !== -1) {
         setAssignedRequest(Emergency.assignedRequests[index]);
         setIsAssigning(false);
