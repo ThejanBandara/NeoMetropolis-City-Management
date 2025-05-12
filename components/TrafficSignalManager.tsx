@@ -31,6 +31,7 @@ const TrafficSignalManager = () => {
         }
 
         val.undoStack.push(val.timing);
+        val.redoStack.clear();
         val.timing = value;
         setSignals(prevSignals => {
             const updatedSignals = [...prevSignals];
