@@ -5,6 +5,8 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { EmergencyRequestPriorityQueue } from "../EmergencyRequestPriorityQueue";
 import { useAuth } from "./AuthContext";
 import { assignedRequestsArray } from "../assignedRequests";
+import { mergeSort } from "../sort/mergeSort";
+import { insertionSort } from "../sort/insertionSort";
 
 type EmergencyRequestContextType = {
   requests: EmergencyRequest[];
@@ -1055,7 +1057,6 @@ export const EmergencyRequestProvider = ({ children }: { children: React.ReactNo
           return updated;
         });
 
-        console.log(assignedRequests)
       } else {
         console.log('No request to dequeue');
       }
@@ -1073,7 +1074,8 @@ export const EmergencyRequestProvider = ({ children }: { children: React.ReactNo
   }
 
   const getAllRequests = () => {
-    setRequests(EmergencyRef.current.getAll());
+    setRequests(mergeSort(EmergencyRef.current.getAll()));
+    // setRequests(insertionSort(EmergencyRef.current.getAll()));
   }
 
   const updateRequest = (id: string, updatedFields: Partial<EmergencyRequest>): boolean => {
